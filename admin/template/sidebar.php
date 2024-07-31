@@ -21,8 +21,10 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-        <img src="../assets/img/logo.png" width="50" height="50" alt="Logo">
-        <div class="sidebar-brand-text mx-3">Aplikasi Kasir<sup></sup></div>
+        <div class="sidebar-brand-icon">
+            <img src="assets/img/logo.png" alt="Logo" style="width: 80px; height: auto;">
+        </div>
+        <div class="sidebar-brand-text ">POS Elektro<sup></sup></div>
     </a>
 
     <!-- Divider -->

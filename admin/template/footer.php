@@ -1,4 +1,4 @@
-    </div>
+</div>
     <!-- /.container-fluid -->
 
     </div>
@@ -8,8 +8,8 @@
         <div class="container my-auto">
             <div class="copyright text-center my-auto">
                 <span>
-                    <?php echo date('Y');?> - APlikasi Kasir Angkringan03 |
-                    BY <b><a href="https://www.youtube.com/@ranyhaerunisa" target="_blank">Nama Lengkap</a></b>
+                    <?php echo date('Y');?> - Aplikasi POS Elektronik |
+                    BY <b><a href="https://trahtechindo.com/" target="_blank">PT. TRAH TECH SOLUTIONS</a></b>
                 </span>
             </div>
         </div>

@@ -56,10 +56,11 @@
                             <th>Type</th>
                             <th>Spesifikasi</th>
                             <th>Warna</th>
-                            <th>Stok</th>
                             <th>Harga Beli</th>
                             <th>Harga Jual</th>
                             <th>Satuan</th>
+                            <th>Stok Awal</th>
+                            <th>Stok Akhir</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -81,12 +82,17 @@
                         <tr>
                             <td><?php echo $no;?></td>
                             <td><?php echo $isi['id_barang'];?></td>
-                            <td><?php echo $isi['nama_kategori'];?></td>
+                      <td><?php echo $isi['nama_kategori'];?></td>
                             <td><?php echo $isi['nama_barang'];?></td>
                             <td><?php echo $isi['merk'];?></td>
                             <td><?php echo $isi['type'];?></td>
                             <td><?php echo $isi['spesifikasi'];?></td>
                             <td><?php echo $isi['warna'];?></td>
+                            
+                            <td>Rp.<?php echo number_format($isi['harga_beli']);?>,-</td>
+                            <td>Rp.<?php echo number_format($isi['harga_jual']);?>,-</td>
+                            <td> <?php echo $isi['satuan_barang'];?></td>
+                            <td><?php echo $isi['stok_awal'];?></td>
                             <td>
                                 <?php if($isi['stok'] == '0'){?>
                                 <button class="btn btn-danger"> Habis</button>
@@ -94,9 +100,6 @@
                                 <?php echo $isi['stok'];?>
                                 <?php }?>
                             </td>
-                            <td>Rp.<?php echo number_format($isi['harga_beli']);?>,-</td>
-                            <td>Rp.<?php echo number_format($isi['harga_jual']);?>,-</td>
-                            <td> <?php echo $isi['satuan_barang'];?></td>
                             <td>
                                 <?php if($isi['stok'] <=  '3'){?>
                                 <form method="POST" action="fungsi/edit/edit.php?stok=edit">
@@ -131,11 +134,12 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5">Total </td>
-                            <th><?php echo $totalStok;?></td>
+                            <th colspan="8">Total </td>
                             <th>Rp.<?php echo number_format($totalBeli);?>,-</td>
                             <th>Rp.<?php echo number_format($totalJual);?>,-</td>
-                            <th colspan="2" style="background:#ddd"></th>
+                            <th colspan="2"></th>
+                            <th><?php echo $totalStok;?></td>
+
                         </tr>
                     </tfoot>
                 </table>
@@ -218,10 +222,15 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>Stok</td>
-                                    <td><input type="number" required Placeholder="Stok" class="form-control"
-                                            name="stok"></td>
-                                </tr>
+    <td>Stok Awal</td>
+    <td><input type="number" required Placeholder="Stok Awal" class="form-control"
+            name="stok_awal" id="stok_awal"></td>
+</tr>
+<tr>
+    <td>Stok Akhir</td>
+    <td><input type="number" required Placeholder="Stok Akhir" class="form-control"
+            name="stok" id="stok" readonly></td>
+</tr>
                                 <tr>
                                     <td>Tanggal Input</td>
                                     <td><input type="text" required readonly="readonly" class="form-control"
@@ -239,3 +248,9 @@
             </div>
 
         </div>
+
+        <script>
+document.getElementById('stok_awal').addEventListener('input', function() {
+    document.getElementById('stok').value = this.value;
+});
+</script>

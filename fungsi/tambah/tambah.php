@@ -36,12 +36,14 @@ if (!empty($_SESSION['admin'])) {
             $beli = htmlentities($_POST['beli']);
             $jual = htmlentities($_POST['jual']);
             $satuan = htmlentities($_POST['satuan']);
+            $stok_awal = htmlentities($_POST['stok_awal']);
+            $stok_akhir = htmlentities($_POST['stok_akhir']);
             $stok = htmlentities($_POST['stok']);
             $tgl = htmlentities($_POST['tgl']);
 
-            $data = [$id, $kategori, $nama, $merk, $type, $spesifikasi, $warna, $beli, $jual, $satuan, $stok, $tgl];
-            $sql = 'INSERT INTO barang (id_barang, id_kategori, nama_barang, merk, type, spesifikasi, warna, harga_beli, harga_jual, satuan_barang, stok, tgl_input) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            $data = [$id, $kategori, $nama, $merk, $type, $spesifikasi, $warna, $beli, $jual, $satuan, $stok_awal, $stok_akhir, $stok, $tgl];
+            $sql = 'INSERT INTO barang (id_barang, id_kategori, nama_barang, merk, type, spesifikasi, warna, harga_beli, harga_jual, satuan_barang, stok_awal, stok_akhir, stok, tgl_input) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             $row = $config->prepare($sql);
             $row->execute($data);
             echo '<script>window.location="../../index.php?page=barang&success=tambah-data"</script>';

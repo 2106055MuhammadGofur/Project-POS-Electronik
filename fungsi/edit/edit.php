@@ -229,6 +229,7 @@ if (!empty($_SESSION['admin'])) {
 				<th>Spesifikasi</th>
 				<th>Warna</th>
 				<th>Harga Jual</th>
+                
 				<th>Aksi</th>
 			</tr>
 		<?php foreach ($hasil1 as $hasil) {?>

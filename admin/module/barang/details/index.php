@@ -39,6 +39,18 @@
 				<td><?php echo $hasil['merk'];?></td>
 			</tr>
 			<tr>
+				<td>Type Barang</td>
+				<td><?php echo $hasil['type'];?></td>
+			</tr>
+			<tr>
+				<td>Spesifikasi Barang</td>
+				<td><?php echo $hasil['spesifikasi'];?></td>
+			</tr>
+			<tr>
+				<td>Warna Barang</td>
+				<td><?php echo $hasil['warna'];?></td>
+			</tr>
+			<tr>
 				<td>Harga Beli</td>
 				<td><?php echo $hasil['harga_beli'];?></td>
 			</tr>
@@ -47,8 +59,27 @@
 				<td><?php echo $hasil['harga_jual'];?></td>
 			</tr>
 			<tr>
+				<td>Kembalian</td>
+				<td>
+					<?php
+					// Asumsikan ada variabel $jumlah_bayar yang menyimpan jumlah yang dibayarkan
+					$jumlah_bayar = isset($_GET['jumlah_bayar']) ? floatval($_GET['jumlah_bayar']) : 0;
+					$harga_jual = floatval($hasil['harga_jual']);
+					$kembalian = $jumlah_bayar - $harga_jual;
+					echo ($kembalian >= 0) ? number_format($kembalian, 2) : "Pembayaran kurang";
+					?>
+				</td>
+			</tr>
+			<tr>
 				<td>Satuan Barang</td>
 				<td><?php echo $hasil['satuan_barang'];?></td>
+			</tr>
+			<tr>
+				<td>Stok Awal</td>
+				<td><?php echo $hasil['stok_awal'];?></td>
+			</tr><tr>
+				<td>Stok Akhir</td>
+				<td><?php echo $hasil['stok_akhir'];?></td>
 			</tr>
 			<tr>
 				<td>Stok</td>

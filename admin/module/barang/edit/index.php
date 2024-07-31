@@ -82,7 +82,11 @@
 					</td>
 				</tr>
 				<tr>
-					<td>Stok</td>
+					<td>Stok Awal</td>
+					<td><input type="number" class="form-control" value="<?php echo $hasil['stok_awal'];?>" name="stok_awal"></td>
+				</tr>
+				<tr>
+					<td>Stok Akhir</td>
 					<td><input type="number" class="form-control" value="<?php echo $hasil['stok'];?>" name="stok"></td>
 				</tr>
 				<tr>
