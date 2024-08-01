@@ -106,6 +106,7 @@
                                     <input type="text" name="restok" class="form-control">
                                     <input type="hidden" name="id" value="<?php echo $isi['id_barang'];?>"
                                         class="form-control">
+                                    <input type="hidden" name="stok_awal" value="<?php echo $isi['stok_awal'];?>" class="form-control">
                                     <button class="btn btn-primary btn-sm">
                                         Restok
                                     </button>
@@ -173,7 +174,7 @@
                                     <td>
                                         <select name="kategori" class="form-control" required>
                                             <option value="#">Pilih Kategori</option>
-                                            <?php  $kat = $lihat -> kategori(); foreach($kat as $isi){ 	?>
+                                            <?php  $kat = $lihat -> kategori(); foreach($kat as $isi){  ?>
                                             <option value="<?php echo $isi['id_kategori'];?>">
                                                 <?php echo $isi['nama_kategori'];?></option>
                                             <?php }?>

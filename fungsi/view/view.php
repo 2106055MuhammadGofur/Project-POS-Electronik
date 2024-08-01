@@ -259,4 +259,70 @@ class view
         $hasil = $row -> fetch();
         return $hasil;
     }
+
+    public function laporan_edit($id) {
+        $result = $this->db->prepare("SELECT * FROM nota WHERE id_nota = ?");
+        $result->execute(array($id));
+        return $result->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function hapus_laporan_jual($id){
+        // Mulai transaksi
+        $this->db->beginTransaction();
+        
+        try {
+            // Ambil data nota sebelum dihapus
+            $sql_select = "SELECT id_barang, jumlah FROM nota WHERE id_nota = ?";
+            $result_select = $this->db->prepare($sql_select);
+            $result_select->execute(array($id));
+            $nota = $result_select->fetch(PDO::FETCH_ASSOC);
+            
+            if ($nota) {
+                // Update stok barang
+                $sql_update = "UPDATE barang SET stok = stok + ? WHERE id_barang = ?";
+                $result_update = $this->db->prepare($sql_update);
+                $result_update->execute(array($nota['jumlah'], $nota['id_barang']));
+                
+                // Hapus nota
+                $sql_delete = "DELETE FROM nota WHERE id_nota = ?";
+                $result_delete = $this->db->prepare($sql_delete);
+                $result_delete->execute(array($id));
+                
+                // Commit transaksi
+                $this->db->commit();
+                return true;
+            } else {
+                throw new Exception("Nota tidak ditemukan");
+            }
+        } catch (Exception $e) {
+            // Rollback jika terjadi error
+            $this->db->rollBack();
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
+    public function update_laporan_jual($id, $id_barang, $jumlah_lama, $jumlah_baru){
+        $this->db->beginTransaction();
+
+        try {
+            // Update nota
+            $sql_update_nota = "UPDATE nota SET jumlah = ? WHERE id_nota = ?";
+            $result_update_nota = $this->db->prepare($sql_update_nota);
+            $result_update_nota->execute(array($jumlah_baru, $id));
+
+            // Update stok barang
+            $selisih = $jumlah_lama - $jumlah_baru;
+            $sql_update_barang = "UPDATE barang SET stok = stok + ? WHERE id_barang = ?";
+            $result_update_barang = $this->db->prepare($sql_update_barang);
+            $result_update_barang->execute(array($selisih, $id_barang));
+
+            $this->db->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            error_log($e->getMessage());
+            return false;
+        }
+    }
 }

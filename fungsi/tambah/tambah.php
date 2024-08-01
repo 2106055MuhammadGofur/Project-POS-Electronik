@@ -121,4 +121,34 @@ if (!empty($_SESSION['admin'])) {
             }
         }
     }
+    
+    if (!empty($_GET['penjualan'])) {
+        require '../../config.php';
+        
+        if (!empty($_POST['nama_barang']) && !empty($_POST['jumlah'])) {
+            $id = $_POST['nama_barang'];
+            $jumlah = $_POST['jumlah'];
+            $kasir = $_SESSION['admin']['id_member'];
+            $tgl = date("j F Y, G:i");
+            
+            // Check if the item already exists in the cart
+            $sql_check = "SELECT * FROM penjualan WHERE id_barang = ? AND id_member = ?";
+            $row_check = $config->prepare($sql_check);
+            $row_check->execute(array($id, $kasir));
+            $existing_item = $row_check->fetch();
+            
+            if ($existing_item) {
+                // Item already exists, return an error
+                $_SESSION['error_message'] = "Barang sudah ada di keranjang. Silakan update jumlahnya di tabel keranjang.";
+            } else {
+                // Item doesn't exist, insert new record
+                $sql_tambah = "INSERT INTO penjualan (id_barang, id_member, jumlah, tanggal_input) VALUES (?, ?, ?, ?)";
+                $row_tambah = $config->prepare($sql_tambah);
+                $row_tambah->execute(array($id, $kasir, $jumlah, $tgl));
+                $_SESSION['success_message'] = "Barang berhasil ditambahkan ke keranjang.";
+            }
+            
+            echo '<script>window.location="../../index.php?page=jual"</script>';
+        }
+    }
 }

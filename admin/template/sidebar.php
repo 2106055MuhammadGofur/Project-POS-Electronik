@@ -21,10 +21,8 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-        <div class="sidebar-brand-icon">
-            <img src="assets/img/logo.png" alt="Logo" style="width: 80px; height: auto;">
-        </div>
-        <div class="sidebar-brand-text ">POS Elektro<sup></sup></div>
+            <img src="assets/img/logowhite.png" alt="Logo" style="width: 100px; height: auto;">
+            <div class="">POS Elektro<sup></sup></div>
     </a>
 
     <!-- Divider -->

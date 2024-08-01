@@ -36,21 +36,13 @@ if (!empty($_SESSION['admin'])) {
     if (!empty($_GET['stok'])) {
         $restok = htmlentities($_POST['restok']);
         $id = htmlentities($_POST['id']);
-        $dataS[] = $id;
-        $sqlS = 'select*from barang WHERE id_barang=?';
-        $rowS = $config -> prepare($sqlS);
-        $rowS -> execute($dataS);
-        $hasil = $rowS -> fetch();
-
-        $stok = $restok + $hasil['stok'];
-
-        $data[] = $stok;
-        $data[] = $id;
-        $sql = 'UPDATE barang SET stok=? WHERE id_barang=?';
-        $row = $config -> prepare($sql);
-        $row -> execute($data);
-        $_SESSION['success_message'] = "Data berhasil diperbarui!";
-        echo '<script>window.location="../../index.php?page=barang&success-stok=stok-data"</script>';
+        $stok_awal = $_POST['stok_awal'];
+        
+        $sql = "UPDATE barang SET stok = stok + ?, stok_awal = stok_awal + ? WHERE id_barang = ?";
+        $row = $config->prepare($sql);
+        $row->execute(array($restok, $restok, $id));
+        
+        echo '<script>window.location="../../index.php?page=barang&success-stok=stock-data-updated"</script>';
     }
 
     if (!empty($_GET['barang'])) {
@@ -251,5 +243,29 @@ if (!empty($_SESSION['admin'])) {
 		</table>
 <?php
         }
+    }
+}
+
+// Tambahkan kode berikut di bawah
+if (!empty($_GET['laporan'])) {
+    if ($_GET['laporan'] == 'jual') {
+        $id = $_POST['id'];
+        $id_barang = $_POST['id_barang'];
+        $jumlah_lama = $_POST['jumlah_lama'];
+        $jumlah_baru = $_POST['jumlah'];
+
+        // Update data penjualan
+        $sql = "UPDATE nota SET jumlah = ?, total = harga * ? WHERE id_nota = ?";
+        $row = $config->prepare($sql);
+        $row->execute(array($jumlah_baru, $jumlah_baru, $id));
+
+        // Update stok barang
+        $selisih = $jumlah_lama - $jumlah_baru;
+        $sql_barang = "UPDATE barang SET stok = stok + ? WHERE id_barang = ?";
+        $row_barang = $config->prepare($sql_barang);
+        $row_barang->execute(array($selisih, $id_barang));
+
+        echo '<script>alert("Data penjualan berhasil diubah dan stok barang telah diperbarui.");
+        window.location="../../index.php?page=laporan"</script>';
     }
 }

@@ -148,6 +148,7 @@
 								<th style="width:10%;"> Total</th>
 								<th> Kasir</th>
 								<th> Tanggal Input</th>
+								<th> Aksi</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -158,15 +159,15 @@
 									$no=1; 
 									$jumlah = 0;
 									$bayar = 0;
-									$hasil = $lihat -> periode_jual($periode);
+									$hasil = $lihat->periode_jual($periode);
 								}elseif(!empty($_GET['hari'])){
 									$hari = $_POST['hari'];
 									$no=1; 
 									$jumlah = 0;
 									$bayar = 0;
-									$hasil = $lihat -> hari_jual($hari);
+									$hasil = $lihat->hari_jual($hari);
 								}else{
-									$hasil = $lihat -> jual();
+									$hasil = $lihat->jual();
 								}
 							?>
 							<?php 
@@ -187,6 +188,10 @@
 								<td>Rp.<?php echo number_format($isi['total']);?>,-</td>
 								<td><?php echo $isi['nm_member'];?></td>
 								<td><?php echo $isi['tanggal_input'];?></td>
+								<td>
+									<a href="index.php?page=laporan&edit=<?php echo $isi['id_nota'];?>" class="btn btn-warning btn-sm">Edit</a>
+									<button onclick="confirmDelete(<?php echo $isi['id_nota'];?>)" class="btn btn-danger btn-sm">Hapus</button>
+								</td>
 							</tr>
 							<?php $no++; }?>
 						</tbody>
@@ -207,3 +212,54 @@
 		</div>
      </div>
  </div>
+
+ <?php
+ if(isset($_GET['edit'])){
+    $id = $_GET['edit'];
+    $edit = $lihat->laporan_edit($id);
+?>
+<div class="card mt-3">
+    <div class="card-header">
+        <h5 class="card-title">Edit Laporan Penjualan</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" action="fungsi/edit/edit.php?laporan=jual">
+            <input type="hidden" name="id" value="<?php echo $edit['id_nota'];?>">
+            <input type="hidden" name="id_barang" value="<?php echo $edit['id_barang'];?>">
+            <input type="hidden" name="jumlah_lama" value="<?php echo $edit['jumlah'];?>">
+            <div class="form-group">
+                <label>Jumlah</label>
+                <input type="number" name="jumlah" class="form-control" value="<?php echo $edit['jumlah'];?>" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        </form>
+    </div>
+</div>
+<?php } ?>
+
+<?php
+if(isset($_SESSION['success'])) {
+    echo '<div class="alert alert-success">'.$_SESSION['success'].'</div>';
+    unset($_SESSION['success']);
+}
+if(isset($_SESSION['error'])) {
+    echo '<div class="alert alert-danger">'.$_SESSION['error'].'</div>';
+    unset($_SESSION['error']);
+}
+?>
+
+<script>
+function confirmDelete(id) {
+    var adminCode = prompt("Masukkan kode admin untuk menghapus:");
+    if (adminCode != null && adminCode != "") {
+        // You should replace 'your_admin_code' with the actual admin code
+        if (adminCode === 'admin') {
+            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
+                window.location.href = 'fungsi/hapus/hapus.php?laporan=jual&id=' + id;
+            }
+        } else {
+            alert('Kode admin salah. Penghapusan dibatalkan.');
+        }
+    }
+}
+</script>

@@ -8,8 +8,12 @@
 	require 'config.php';
 	include $view;
 	$lihat = new view($config);
-	$toko = $lihat -> toko();
-	$hsl = $lihat -> penjualan();
+	$toko = $lihat->toko();
+	$hsl = $lihat->penjualan();
+	$nm_member = $_GET['nm_member'];
+	$bayar = $_GET['bayar'];
+	$kembali = $_GET['kembali'];
+	$total = $_GET['total'];
 ?>
 <html>
 	<head>
@@ -26,7 +30,7 @@
 						<p><?php echo $toko['nama_toko'];?></p>
 						<p><?php echo $toko['alamat_toko'];?></p>
 						<p>Tanggal : <?php  echo date("j F Y, G:i");?></p>
-						<p>Kasir : <?php  echo htmlentities($_GET['nm_member']);?></p>
+						<p>Kasir : <?php  echo htmlentities($nm_member);?></p>
 					</center>
 					<table class="table table-bordered" style="width:100%;">
 						<tr>
@@ -40,17 +44,16 @@
 							<td><?php echo $no;?></td>
 							<td><?php echo $isi['nama_barang'];?></td>
 							<td><?php echo $isi['jumlah'];?></td>
-							<td><?php echo $isi['total'];?></td>
+							<td>Rp.<?php echo number_format($isi['total']);?>,-</td>
 						</tr>
 						<?php $no++; }?>
 					</table>
 					<div class="pull-right">
-						<?php $hasil = $lihat -> jumlah(); ?>
-						Total : Rp.<?php echo number_format($hasil['bayar']);?>,-
+						Total : Rp.<?php echo number_format($total);?>,-
 						<br/>
-						Bayar : Rp.<?php echo number_format(htmlentities($_GET['bayar']));?>,-
+						Bayar : Rp.<?php echo number_format($bayar);?>,-
 						<br/>
-						Kembali : Rp.<?php echo number_format(htmlentities($_GET['kembali']));?>,-
+						Kembali : Rp.<?php echo number_format($kembali);?>,-
 					</div>
 					<div class="clearfix"></div>
 					<center>
