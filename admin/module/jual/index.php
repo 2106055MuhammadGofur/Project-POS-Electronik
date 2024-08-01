@@ -267,7 +267,7 @@ $hasil = $lihat->member_edit($id);
 									<td></td>
 									<td>
 										<a href="print.php?nm_member=<?php echo $_SESSION['admin']['nm_member']; ?>
-									&bayar=<?php echo $bayar; ?>&kembali=<?php echo $hitung; ?>" target="_blank">
+									&bayar=<?php echo $bayar; ?>&kembali=<?php echo $hitung; ?>&total=<?php echo $total_bayar; ?>" target="_blank">
 											<button class="btn btn-secondary">
 												<i class="fa fa-print"></i> Print Untuk Bukti Pembayaran
 											</button></a>
