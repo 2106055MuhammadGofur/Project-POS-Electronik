@@ -9,16 +9,17 @@
 
 		$sql = 'select member.*, login.user, login.pass
 				from member inner join login on member.id_member = login.id_member
-				where user =? and pass = ?';
+				where user =? and pass = md5(?)';
 		$row = $config->prepare($sql);
 		$row -> execute(array($user,$pass));
 		$jum = $row -> rowCount();
 		if($jum > 0){
 			$hasil = $row -> fetch();
 			$_SESSION['admin'] = $hasil;
-			echo '<script>alert("Login Sukses");window.location="index.php"</script>';
+			header("Location: index.php");
+			exit();
 		}else{
-			echo '<script>alert("Login Gagal");history.go(-1);</script>';
+			$loginError = true; // Menambahkan variabel untuk notifikasi
 		}
 	}
 ?>
@@ -54,6 +55,11 @@
 							<div class="text-center">
 								<h4 class="h4 text-gray-900 mb-4"><b>Point Of sale</b></h4>
 							</div>
+							<?php if(isset($loginError) && $loginError): ?>
+								<div class="alert alert-danger" role="alert">
+									Login Gagal. Silakan coba lagi.
+								</div>
+							<?php endif; ?>
 							<form class="form-login" method="POST">
 								<div class="form-group">
 									<input type="text" class="form-control form-control-user" name="user"
