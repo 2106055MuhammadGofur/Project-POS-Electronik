@@ -142,6 +142,7 @@ $hasil = $lihat->member_edit($id);
 									<td> No</td>
 									<td> Nama Barang</td>
 									<td style="width:10%;"> Jumlah</td>
+									<td style="width:10%;"> Stok Akhir</td>
 									<td style="width:20%;"> Total</td>
 									<td> Kasir</td>
 									<td> Aksi</td>
@@ -165,10 +166,20 @@ $hasil = $lihat->member_edit($id);
 												<input type="hidden" name="id_barang"
 													value="<?php echo $isi['id_barang']; ?>" class="form-control">
 										</td>
+										<td style="width:10%;">
+											<?php
+											// Panggil stok akhir dari database
+											$sql_stok = "SELECT stok FROM barang WHERE id_barang = ?";
+											$row_stok = $config->prepare($sql_stok);
+											$row_stok->execute(array($isi['id_barang']));
+											$stok_akhir = $row_stok->fetch(PDO::FETCH_ASSOC)['stok'];
+											echo $stok_akhir;
+											?>
+										</td>
 										<td>Rp.<?php echo number_format($isi['total']); ?>,-</td>
 										<td><?php echo $isi['nm_member']; ?></td>
 										<td>
-											<button type="submit" class="btn btn-warning">Update</button>
+											<button type="submit" class="btn btn-warning">Update Jumlah</button>
 											</form>
 											<!-- aksi ke table penjualan -->
 											<a href="fungsi/hapus/hapus.php?jual=jual&id=<?php echo $isi['id_penjualan']; ?>&brg=<?php echo $isi['id_barang']; ?>
@@ -228,15 +239,17 @@ $hasil = $lihat->member_edit($id);
 														<div class="modal-content">
 															<div class="modal-header">
 																<h5 class="modal-title" id="successModalLabel">Pembayaran Berhasil</h5>
-																<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-																	<span aria-hidden="true">&times;</span>
-																</button>
 															</div>
 															<div class="modal-body">
 																Belanjaan Berhasil Di Bayar!
 															</div>
 															<div class="modal-footer">
-																<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+																<a href="print.php?nm_member=' . $_SESSION['admin']['nm_member'] . '&bayar=' . $bayar . '&kembali=' . $hitung . '&total=' . $total_bayar . '" target="_blank" class="btn btn-secondary">
+																	<i class="fa fa-print"></i> Print Untuk Bukti Pembayaran
+																</a>
+																<a href="fungsi/hapus/hapus.php?penjualan=jual" class="btn btn-danger">
+																	<i class="fa fa-refresh"></i> Reset Pembayaran
+																</a>
 															</div>
 														</div>
 													</div>
@@ -298,23 +311,19 @@ $hasil = $lihat->member_edit($id);
 										<td><button class="btn btn-success" id="btnBayar" disabled><i
 													class="fa fa-shopping-cart"></i> Bayar</button></td>
 										<?php if (!empty($_GET['nota'] == 'yes')) { ?>
-											<a class="btn btn-danger" href="fungsi/hapus/hapus.php?penjualan=jual">
-												<b>RESET</b></a>
 											</td><?php } ?></td>
 									</tr>
 								</form>
 								<!-- aksi ke table nota -->
 								<tr>
-									<td>Kembali</td>
+									<td>Kembalian</td>
 									<td><input type="text" class="form-control" value="<?php echo $hitung; ?>"></td>
 									<td></td>
 									<td>
 										<a href="print.php?nm_member=<?php echo $_SESSION['admin']['nm_member']; ?>
 									&bayar=<?php echo $bayar; ?>&kembali=<?php echo $hitung; ?>&total=<?php echo $total_bayar; ?>"
 											target="_blank">
-											<button class="btn btn-secondary">
-												<i class="fa fa-print"></i> Print Untuk Bukti Pembayaran
-											</button></a>
+
 									</td>
 								</tr>
 							</table>
