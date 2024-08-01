@@ -111,8 +111,9 @@
                                         Restok
                                     </button>
                                     <a href="fungsi/hapus/hapus.php?barang=hapus&id=<?php echo $isi['id_barang'];?>"
-                                        onclick="javascript:return confirm('Hapus Data barang ?');">
-                                        <button class="btn btn-danger btn-sm">sdds</button></a>
+                                        onclick="javascript:return confirm('Apakah Anda yakin ingin menghapus data barang ini?');">
+                                        <button type="button" class="btn btn-danger btn-sm">Hapus</button>
+                                    </a>
                                 </form>
                                 <?php }else{?>
                                 <a href="index.php?page=barang/details&barang=<?php echo $isi['id_barang'];?>"><button
@@ -121,7 +122,7 @@
                                 <a href="index.php?page=barang/edit&barang=<?php echo $isi['id_barang'];?>"><button
                                         class="btn btn-warning btn-xs">Edit</button></a>
                                 <a href="fungsi/hapus/hapus.php?barang=hapus&id=<?php echo $isi['id_barang'];?>"
-                                    onclick="javascript:return confirm('Hapus Data barang ?');"><button
+                                    onclick="javascript:return confirm('Apakah Anda yakin ingin menghapus data barang ini?');"><button
                                         class="btn btn-danger btn-xs">Hapus</button></a>
                                 <?php }?>
                         </tr>
