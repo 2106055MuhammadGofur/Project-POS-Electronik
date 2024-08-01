@@ -189,7 +189,7 @@
 								<td><?php echo $isi['nm_member'];?></td>
 								<td><?php echo $isi['tanggal_input'];?></td>
 								<td>
-									<a href="index.php?page=laporan&edit=<?php echo $isi['id_nota'];?>" class="btn btn-warning btn-sm">Edit</a>
+									<button onclick="openEditModal('<?php echo $isi['id_nota'];?>', '<?php echo $isi['id_barang'];?>', '<?php echo $isi['jumlah'];?>', '<?php echo $isi['jumlah'];?>')" class="btn btn-warning btn-sm">Edit</button>
 									<button onclick="confirmDelete(<?php echo $isi['id_nota'];?>)" class="btn btn-danger btn-sm">Hapus</button>
 								</td>
 							</tr>
@@ -214,31 +214,7 @@
  </div>
 
  <?php
- if(isset($_GET['edit'])){
-    $id = $_GET['edit'];
-    $edit = $lihat->laporan_edit($id);
-?>
-<div class="card mt-3">
-    <div class="card-header">
-        <h5 class="card-title">Edit Laporan Penjualan</h5>
-    </div>
-    <div class="card-body">
-        <form method="post" action="fungsi/edit/edit.php?laporan=jual">
-            <input type="hidden" name="id" value="<?php echo $edit['id_nota'];?>">
-            <input type="hidden" name="id_barang" value="<?php echo $edit['id_barang'];?>">
-            <input type="hidden" name="jumlah_lama" value="<?php echo $edit['jumlah'];?>">
-            <div class="form-group">
-                <label>Jumlah</label>
-                <input type="number" name="jumlah" class="form-control" value="<?php echo $edit['jumlah'];?>" required>
-            </div>
-            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-        </form>
-    </div>
-</div>
-<?php } ?>
-
-<?php
-if(isset($_SESSION['success'])) {
+ if(isset($_SESSION['success'])) {
     echo '<div class="alert alert-success">'.$_SESSION['success'].'</div>';
     unset($_SESSION['success']);
 }
@@ -248,17 +224,61 @@ if(isset($_SESSION['error'])) {
 }
 ?>
 
+<!-- Modal Edit -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Laporan Penjualan</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="editForm" method="post" action="fungsi/edit/edit.php?laporan=jual">
+        <div class="modal-body">
+          <input type="hidden" id="editId" name="id">
+          <input type="hidden" id="editIdBarang" name="id_barang">
+          <input type="hidden" id="editJumlahLama" name="jumlah_lama">
+          <input type="hidden" name="admin_code" value="admin">
+          <div class="form-group">
+            <label for="editJumlah">Jumlah</label>
+            <input type="number" class="form-control" id="editJumlah" name="jumlah" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+          <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <script>
 function confirmDelete(id) {
     var adminCode = prompt("Masukkan kode admin untuk menghapus:");
     if (adminCode != null && adminCode != "") {
-        // You should replace 'your_admin_code' with the actual admin code
         if (adminCode === 'admin') {
             if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
                 window.location.href = 'fungsi/hapus/hapus.php?laporan=jual&id=' + id;
             }
         } else {
             alert('Kode admin salah. Penghapusan dibatalkan.');
+        }
+    }
+}
+
+function openEditModal(idNota, idBarang, jumlah, jumlahLama) {
+    var adminCode = prompt("Masukkan kode admin untuk mengedit:");
+    if (adminCode != null && adminCode != "") {
+        if (adminCode === 'admin') {
+            document.getElementById('editId').value = idNota;
+            document.getElementById('editIdBarang').value = idBarang;
+            document.getElementById('editJumlah').value = jumlah;
+            document.getElementById('editJumlahLama').value = jumlahLama;
+            $('#editModal').modal('show');
+        } else {
+            alert('Kode admin salah. Pengeditan dibatalkan.');
         }
     }
 }
